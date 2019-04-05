@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Wholesome Ipsum</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="bootstrap.css">
+        <link rel="stylesheet" href="confetti.scss">
+        <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash" rel="stylesheet">
+    </head>
+    <body>
+        <div id ="content">
+            <h1 id = "main"><a href="ipsum.html" >Wholesome Ipsum</a><img src = "donut.png"></a></h1>
+            <h6 id ="tagline">A <strong>Delightful</strong> Lorem Ipsum Generator</h6>
+        </div>
+           <div class="input-group mb-3">
+                    <select class="custom-select" id="paragraphSelect">
+                    <option value="" selected disabled>How many paragraphs do you need?</option>
+                    <option value=1>1 Paragraph</option>
+                    <option value=2>2 Paragraphs</option>
+                    <option value=3>3 Paragraphs</option>
+                    <option value=4>4 Paragraphs</option>
+                    <option value=5>5 Paragraphs</option>
+                    </select>
+                <button type="button" class="btn btn-primary" onclick="run()">Generate, please</button>
+                </div>
+                <div id='ipsums' style = "display: none">
+                    <div id="ipsumParagraphs">
+                    <p id="ipsum"></p>
+                    <p id="ipsum1"></p>
+                    <p id="ipsum2"></p>
+                    <p id="ipsum3"></p>
+                    <p id="ipsum4"></p>
+                    <p id="ipsum5"></p>
+                </div>
+                <button type="button" class="btn btn-outline-secondary" onclick="copyToClipboard('ipsumParagraphs')">Copy to clipboard, please</button>
+                </div>
+        <div class="footer">
+            <a href="http://hagenah.design" target="_blank">Designed by <strong>Graham Hagenah</strong></a>
+        <div>
+        <script>
+            var vocab = ["puppies", "kittens", "friendly", "flowers", "season", "glow", "blush", "scream", "ghoulish", "cult", "zombie", "frighten", "vampire", "witch"];
+            var vocabLength = vocab.length; 
+            var finalParagraph = '';
+            var numberOfParagraphs;
+
+            function hide() {
+                var x = document.getElementById("ipsums");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "block";
+                }
+            }
+            //get value of selector 
+            function getCustomSelectValue(){
+                var e = document.getElementById("paragraphSelect");
+                numberOfParagraphs = e.options[e.selectedIndex].value;
+            }
+
+            function clearParagraphs() {
+                document.getElementById("ipsum").innerHTML = '';
+                document.getElementById("ipsum2").innerHTML = '';
+                document.getElementById("ipsum3").innerHTML = '';  
+                document.getElementById("ipsum4").innerHTML = '';
+                document.getElementById("ipsum5").innerHTML = '';
+            }
+
+
+            function getRndInteger(min, max) {
+                return Math.floor(Math.random() * (max - min + 1) ) + min;
+            }
+
+            String.prototype.replaceAt=function(index, replacement) {
+                return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
+            }
+
+            function copyToClipboard(containerid) {
+                if (document.selection) { 
+                    var range = document.body.createTextRange();
+                    range.moveToElementText(document.getElementById(containerid));
+                    range.select().createTextRange();
+                    document.execCommand("copy"); 
+
+                } else if (window.getSelection) {
+                    var range = document.createRange();
+                    range.selectNode(document.getElementById(containerid));
+                    window.getSelection().addRange(range);
+                    document.execCommand("copy");
+                }}
+
+
+            function generateSentence(){
+                //number of words per sentence, between 15 and 20
+                var sentenceLength = getRndInteger(7, 16);
+                var s = [];
+                for(j = 0; j < sentenceLength; j++){
+                    //chooses random word from the vocab arrary
+                    s.push(vocab[Math.floor(Math.random() * vocabLength)]);
+                }  
+                //take first string in array and replace with a capitalized string
+                s[0] = s[0].replaceAt(0, s[0].charAt(0).toUpperCase());
+                s.push(".")
+                return s;
+            }
+
+            function generateParagraph() {
+                //number of sentences per paragraph
+                var paragraphLength = getRndInteger(6, 8);
+                //create array of sentences composing one full paragraph
+                var p = [];
+                for(i = 0; i < paragraphLength; i++){
+                    p.push(generateSentence());
+                }
+                return p;
+            }
+            
+            function run(){
+                getCustomSelectValue();
+                if(numberOfParagraphs != ''){
+                hide();
+                clearParagraphs();
+                for(w = 0; w < numberOfParagraphs; w++){
+                    finalParagraph = '';
+                    var paragraph = generateParagraph();
+                    for(z=0; z < paragraph.length; z++){
+
+                        for(x=0; x < paragraph[z].length; x++){
+                            if(paragraph[z][x] == '.')
+                                finalParagraph = finalParagraph + paragraph[z][x];
+                            else
+                                finalParagraph = finalParagraph + ' ' + paragraph[z][x];
+                        }
+                    }
+                    if(w==0)
+                    document.getElementById("ipsum").innerHTML = finalParagraph;
+                    if(w==1)
+                    document.getElementById("ipsum2").innerHTML = finalParagraph;
+                    if(w==2)
+                    document.getElementById("ipsum3").innerHTML = finalParagraph;
+                    if(w==3)
+                    document.getElementById("ipsum4").innerHTML = finalParagraph;
+                    if(w==4)
+                    document.getElementById("ipsum5").innerHTML = finalParagraph;
+                }
+              }
+            }
+        </script>
+    </body>
+</html>
+
